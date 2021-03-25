@@ -1,178 +1,14 @@
 var express = require('express');
 const request = require('request');
 var logger = require('./javascripts/logger.js');
+var propertiesReader = require('properties-reader');
 
 var app = express();
 app.set('view engine', 'pug')
 app.use(express.static('public'));
 
-var urls = [{
-        url: "https://www.baidu.com/afdafsfasfsfasdfadsfasfasdfasfasdfasfasfasf",
-        isSuccess: true,
-    },
-    {
-        url: "https://www.taobao.com",
-        isSuccess: true,
-    },
-    {
-        url: "https://www.jd.com",
-        isSuccess: true,
-    },{
-        url: "https://www.baidu.com/afdafsfasfsfasdfadsfasfasdfasfasdfasfasfasf",
-        isSuccess: true,
-    },
-    {
-        url: "https://www.taobao.com",
-        isSuccess: true,
-    },
-    {
-        url: "https://www.jd.com",
-        isSuccess: true,
-    },{
-        url: "https://www.baidu.com/afdafsfasfsfasdfadsfasfasdfasfasdfasfasfasf",
-        isSuccess: true,
-    },
-    {
-        url: "https://www.taobao.com",
-        isSuccess: true,
-    },
-    {
-        url: "https://www.jd.com",
-        isSuccess: true,
-    },{
-        url: "https://www.baidu.com/afdafsfasfsfasdfadsfasfasdfasfasdfasfasfasf",
-        isSuccess: true,
-    },
-    {
-        url: "https://www.taobao.com",
-        isSuccess: true,
-    },
-    {
-        url: "https://www.jd.com",
-        isSuccess: true,
-    },{
-        url: "https://www.baidu.com/afdafsfasfsfasdfadsfasfasdfasfasdfasfasfasf",
-        isSuccess: true,
-    },
-    {
-        url: "https://www.taobao.com",
-        isSuccess: true,
-    },
-    {
-        url: "https://www.jd.com",
-        isSuccess: true,
-    },{
-        url: "https://www.baidu.com/afdafsfasfsfasdfadsfasfasdfasfasdfasfasfasf",
-        isSuccess: true,
-    },
-    {
-        url: "https://www.taobao.com",
-        isSuccess: true,
-    },
-    {
-        url: "https://www.jd.com",
-        isSuccess: true,
-    },{
-        url: "https://www.baidu.com/afdafsfasfsfasdfadsfasfasdfasfasdfasfasfasf",
-        isSuccess: true,
-    },
-    {
-        url: "https://www.taobao.com",
-        isSuccess: true,
-    },
-    {
-        url: "https://www.jd.com",
-        isSuccess: true,
-    },{
-        url: "https://www.baidu.com/afdafsfasfsfasdfadsfasfasdfasfasdfasfasfasf",
-        isSuccess: true,
-    },
-    {
-        url: "https://www.taobao.com",
-        isSuccess: true,
-    },
-    {
-        url: "https://www.jd.com",
-        isSuccess: true,
-    },{
-        url: "https://www.baidu.com/afdafsfasfsfasdfadsfasfasdfasfasdfasfasfasf",
-        isSuccess: true,
-    },
-    {
-        url: "https://www.taobao.com",
-        isSuccess: true,
-    },
-    {
-        url: "https://www.jd.com",
-        isSuccess: true,
-    },{
-        url: "https://www.baidu.com/afdafsfasfsfasdfadsfasfasdfasfasdfasfasfasf",
-        isSuccess: true,
-    },
-    {
-        url: "https://www.taobao.com",
-        isSuccess: true,
-    },
-    {
-        url: "https://www.jd.com",
-        isSuccess: true,
-    },{
-        url: "https://www.baidu.com/afdafsfasfsfasdfadsfasfasdfasfasdfasfasfasf",
-        isSuccess: true,
-    },
-    {
-        url: "https://www.taobao.com",
-        isSuccess: true,
-    },
-    {
-        url: "https://www.jd.com",
-        isSuccess: true,
-    },{
-        url: "https://www.baidu.com/afdafsfasfsfasdfadsfasfasdfasfasdfasfasfasf",
-        isSuccess: true,
-    },
-    {
-        url: "https://www.taobao.com",
-        isSuccess: true,
-    },
-    {
-        url: "https://www.jd.com",
-        isSuccess: true,
-    },{
-        url: "https://www.baidu.com/afdafsfasfsfasdfadsfasfasdfasfasdfasfasfasf",
-        isSuccess: true,
-    },
-    {
-        url: "https://www.taobao.com",
-        isSuccess: true,
-    },
-    {
-        url: "https://www.jd.com",
-        isSuccess: true,
-    },{
-        url: "https://www.baidu.com/afdafsfasfsfasdfadsfasfasdfasfasdfasfasfasf",
-        isSuccess: true,
-    },
-    {
-        url: "https://www.taobao.com",
-        isSuccess: true,
-    },
-    {
-        url: "https://www.jd.com",
-        isSuccess: true,
-    },{
-        url: "https://www.baidu.com/afdafsfasfsfasdfadsfasfasdfasfasdfasfasfasf",
-        isSuccess: true,
-    },
-    {
-        url: "https://www.taobao.com",
-        isSuccess: true,
-    },
-    {
-        url: "https://www.jd.com",
-        isSuccess: true,
-    },
-]
+
+
 
 var server = app.listen(3000, function () {
     var host = server.address().address;
@@ -181,6 +17,7 @@ var server = app.listen(3000, function () {
 });
 
 app.get('/', function (req, res) {
+    var urls = loadUrls();
     var urlPromises = urls.map(item => {
         return requestUrl(item)
     });
@@ -192,11 +29,26 @@ app.get('/', function (req, res) {
     });
 });
 
+
+function loadUrls() {
+    var properties = propertiesReader('urls.properties')._properties;
+    var urls = [];
+    for (var key in properties) {
+        var url = {
+            name: key,
+            url: properties[key],
+            isSuccess: true,
+        };
+        urls.push(url)
+    }
+    return urls;
+}
+
 function requestUrl(item) {
     item.isSuccess = true;
     return new Promise(resolve => {
         request(item.url, function (error, response) {
-            
+
             if (error != null || response.statusCode != 200) {
                 logger.log('error', `error: ${JSON.stringify(error)}`);
                 item.isSuccess = false;
