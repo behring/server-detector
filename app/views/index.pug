@@ -3,9 +3,9 @@ html
     title 页面可访问性检测
     script(src='/javascripts/jquery-3.6.0.min.js')
     script(src='/javascripts/refresh-page.js')
+    link(rel='stylesheet', href='/css/styles.css')
   body
   #panel-cotainer
     each url in urls
-      div(style=`background-color: ${url.isSuccess?"green":"red"};height: 300px;width: 100%;text-align: center;line-height: 300px;color: white;`) 
-        p
-          a(href=`${url.url}` target='view_window')=url.url 
+      .div-size(style=`background-color: ${url.isSuccess?"green":"red"};`) 
+        a(href=`${url.url}` target='view_window')=url.url 

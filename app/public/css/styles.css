@@ -1,0 +1,22 @@
+#panel-cotainer {
+    margin: 0 auto;
+    width: 1280px;
+}
+
+.div-size {
+    height: 300px;
+    width: 300px;
+    text-align: center;
+    float: left;
+    margin: 10px;
+    border-radius: 10px;
+}
+
+a {
+    display: block;
+    margin-top: 50%;
+    word-break: break-all;
+    color: white;
+    font-size: 30px;
+    transform: translate(0, -50%);
+}
