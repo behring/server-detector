@@ -21,3 +21,11 @@ a {
     font-size: 30px;
     transform: translate(0, -50%);
 }
+
+button {
+    display: none;
+}
+
+.div-size:hover button {
+    display: inline;
+}

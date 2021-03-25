@@ -5,8 +5,18 @@ html
     script(src='/javascripts/refresh-page.js')
     link(rel='stylesheet', href='/css/styles.css')
   body
+    form(action="/urls", method="post")
+      |name: 
+      input(type="text", name="name")
+      |url: 
+      input(type="text", name="url")
+      input(type="submit", value="confirm")
   #panel-cotainer
     each url in urls
       .div-size(style=`background-color: ${url.isSuccess?"green":"red"};`) 
         p= url.name
         a(href=`${url.url}` target='view_window')=url.url 
+        form(action="/urls", method="post")
+          input(type="hidden", name="method",value="delete")
+          input(type="hidden", name="name",value=`${url.name}`)
+          button(type="submit") delete

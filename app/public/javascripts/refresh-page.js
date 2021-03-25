@@ -3,5 +3,5 @@ $(function () {
 });
 
 function reload() {
-    $("#panel-cotainer").load("/")
+    window.location.reload()
 }
