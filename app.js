@@ -39,6 +39,7 @@ app.get('/', function (req, res) {
 });
 
 function requestUrl(item) {
+    item.isSuccess = true;
     return new Promise(resolve => {
         request(item.url, function (error, response) {
             
